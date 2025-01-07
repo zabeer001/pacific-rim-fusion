@@ -8,7 +8,7 @@ import OrderTotal from './OrderTotal';
 
 //redux
 import { useSelector, useDispatch } from 'react-redux';
-import { updateField, setPaymentMethod } from './../../redux/billSlice';
+import { setPaymentMethod, setTest } from './../../redux/billSlice';
 
 
 
@@ -56,20 +56,26 @@ const paymentOptions = [
 
 function OrderSummary() {
 
-  const [selectedPaymentId, setSelectedPaymentId] = useState(1);
   const dispatch = useDispatch();
+  const [selectedPaymentId, setSelectedPaymentId] = useState(1);
+
   const billState = useSelector((state) => state);
 
 
-    const handlePaymentSelection = (id) => {
+  const handlePaymentSelection = (id) => {
     setSelectedPaymentId(id);
     dispatch(setPaymentMethod(id)); // Update the payment method in Redux state
     const selectedOption = paymentOptions.find(option => option.id === id);
+    console.log(selectedOption);
 
-    // Optionally, clear card details if the selected payment is not 'creditCard'
-    if (id !== 1) {
-      dispatch(updateField({ field: 'cardDetails', value: {} }));
-    }
+    //store in gobalState
+    dispatch(setPaymentMethod(selectedOption));
+    dispatch(setTest({ key: "favoriteColor", value: "blue" }));
+    dispatch(setTest({ key: "hobby", value: "coding" }));
+    dispatch(setTest({ key: "language", value: "JavaScript" }));
+    dispatch(setTest({ key: "age", value: 25 }));
+    dispatch(setTest({ key: "preferences", value: { theme: "dark", notifications: true } })); // Updates the value for the existing key
+
   };
 
   const subtotal = products.reduce((total, product) => {

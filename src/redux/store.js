@@ -1,10 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
-import orderReducer from './billSlice';
+import billReducer from './billSlice';
 
 // Create the store and combine slices
 const store = configureStore({
   reducer: {
-    order: orderReducer
+    bill: billReducer
   }
 });
 

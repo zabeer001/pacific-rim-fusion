@@ -1,4 +1,5 @@
-import React from 'react';
+//disable type
+
 import CreditCardForm from './CreditCardForm';
 
 function PaymentOption({ name, selected, images, image, onSelect }) {
