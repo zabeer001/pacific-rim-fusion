@@ -50,7 +50,16 @@ function OrderSummary() {
 
   const handlePaymentSelection = (id) => {
     setSelectedPaymentId(id);
+    const selectedOption = paymentOptions.find(option => option.id === id);
+    console.log(selectedOption);
   };
+
+  const subtotal = products.reduce((total, product) => {
+    const numericPrice = parseFloat(product.price.replace(/[^0-9.-]+/g, ""));
+    return total + numericPrice;
+  }, 0);
+  
+  console.log("Subtotal:", `₿${subtotal.toLocaleString()}`);
 
   return (
     <div className="flex flex-col max-w-[570px]">
@@ -63,7 +72,7 @@ function OrderSummary() {
             <ProductCard key={product.id} {...product} />
           ))}
         </div>
-        <OrderTotal />
+        <OrderTotal subtotal={subtotal} shippingCharge={3000} />
         <div className="flex flex-col mt-5 w-full max-md:max-w-full">
           {paymentOptions.map((option, index) => (
               <PaymentOption 
@@ -87,5 +96,7 @@ function OrderSummary() {
 }
 
 export default OrderSummary;
+// 
+{/* <div class="flex flex-col mt-5 w-full font-medium leading-tight whitespace-nowrap max-md:max-w-full"><div class="flex flex-wrap gap-10 justify-between items-center w-full text-base max-md:max-w-full"><div class="self-stretch my-auto text-neutral-400">Subtotal</div><div class="self-stretch my-auto text-neutral-900">₿7,000.00</div></div><div class="mt-4 w-full border border-solid bg-neutral-400 border-neutral-400 min-h-[1px] max-md:max-w-full"></div><div class="flex flex-wrap gap-10 justify-between items-center mt-4 w-full max-md:max-w-full"><div class="self-stretch my-auto text-base text-neutral-400">Shipping</div><div class="self-stretch my-auto text-lg text-neutral-900">Free</div></div><div class="mt-4 w-full border border-solid bg-neutral-400 border-neutral-400 min-h-[1px] max-md:max-w-full"></div><div class="flex flex-wrap gap-10 justify-between items-center mt-4 w-full max-md:max-w-full"><div class="self-stretch my-auto text-base text-neutral-400">Total</div><div class="self-stretch my-auto text-xl text-neutral-900">₿48000.00</div></div></div> */}
 
-//<div class="flex flex-col w-full max-md:max-w-full"><label for="country" class="text-left">Country <span class="text-red-600">*</span></label><input type="text" id="country" required="" class="flex gap-2.5 py-4 mt-2 w-full rounded-lg border border-solid border-zinc-400 min-h-[51px] max-md:max-w-full text-black" aria-required="true"></div>
+{/* <div class="flex flex-col mt-5 w-full font-medium leading-tight whitespace-nowrap max-md:max-w-full"><div class="flex flex-wrap gap-10 justify-between items-center w-full text-base max-md:max-w-full"><div class="self-stretch my-auto text-neutral-400">Subtotal</div><div class="self-stretch my-auto text-neutral-900">₿7,000.00</div></div><div class="mt-4 w-full border border-solid bg-neutral-400 border-neutral-400 min-h-[1px] max-md:max-w-full"></div><div class="flex flex-wrap gap-10 justify-between items-center mt-4 w-full max-md:max-w-full"><div class="self-stretch my-auto text-base text-neutral-400">Shipping</div><div class="self-stretch my-auto text-lg text-neutral-900">Free</div></div><div class="mt-4 w-full border border-solid bg-neutral-400 border-neutral-400 min-h-[1px] max-md:max-w-full"></div><div class="flex flex-wrap gap-10 justify-between items-center mt-4 w-full max-md:max-w-full"><div class="self-stretch my-auto text-base text-neutral-400">Total</div><div class="self-stretch my-auto text-xl text-neutral-900">₿48000.00</div></div></div> */}
