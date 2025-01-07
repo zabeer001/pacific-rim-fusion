@@ -1,7 +1,15 @@
 
 import { FormInput } from "./FormInput";
 
+//redux
+import { useSelector, useDispatch } from 'react-redux';
+import { setCountry, setFullName } from './../../redux/billSlice';  // Add 
+
+
+
+
 export function BillingForm() {
+  const dispatch = useDispatch()
   const formFields = [
     { id: "fullName", label: "Full Name", required: true },
     { id: "country", label: "Country", required: true },
@@ -16,6 +24,17 @@ export function BillingForm() {
     e.preventDefault();
   };
 
+  const onvalchange = (name,value) => {
+    console.log(name,value);
+    
+    dispatch(setCountry({country: value}));
+    dispatch(setFullName({fullName: value}));
+  
+
+
+    
+  }
+
   return (
     <div className="flex flex-col leading-tight max-w-[570px]">
       <h1 className="text-3xl font-semibold text-green-800 max-md:max-w-full">
@@ -25,7 +44,7 @@ export function BillingForm() {
         <div className="flex flex-col w-full text-base text-red-600 max-md:max-w-full">
           {formFields.map((field) => (
             <div key={field.id} className="mt-8">
-              <FormInput {...field} />
+              <FormInput {...field} onValueChange={(name,val) => onvalchange(name,val)} />
             </div>
           ))}
         </div>

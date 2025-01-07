@@ -2,6 +2,8 @@ import React from 'react';
 import CreditCardForm from './CreditCardForm';
 
 function PaymentOption({ name, selected, images, image, onSelect }) {
+  console.log(name, selected, images, image, onSelect );
+  
   const borderColor = selected ? 'border-green-800' : 'border-zinc-300';
   const textColor = selected ? 'text-green-800' : 'text-black';
 

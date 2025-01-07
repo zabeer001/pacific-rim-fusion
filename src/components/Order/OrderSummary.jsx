@@ -1,9 +1,19 @@
 'use client'
 
-import { useState } from 'react';
+
+import { useState } from 'react';  // <-- Import useState
 import ProductCard from './ProductCard';
 import PaymentOption from './PaymentOption';
 import OrderTotal from './OrderTotal';
+
+//redux
+import { useSelector, useDispatch } from 'react-redux';
+import { updateField, setPaymentMethod } from './../../redux/billSlice';
+
+
+
+
+
 
 const products = [
   {
@@ -45,21 +55,34 @@ const paymentOptions = [
 ];
 
 function OrderSummary() {
-  const [selectedPaymentId, setSelectedPaymentId] = useState(1);
-  
 
-  const handlePaymentSelection = (id) => {
+  const [selectedPaymentId, setSelectedPaymentId] = useState(1);
+  const dispatch = useDispatch();
+  const billState = useSelector((state) => state);
+
+
+    const handlePaymentSelection = (id) => {
     setSelectedPaymentId(id);
+    dispatch(setPaymentMethod(id)); // Update the payment method in Redux state
     const selectedOption = paymentOptions.find(option => option.id === id);
-    console.log(selectedOption);
+
+    // Optionally, clear card details if the selected payment is not 'creditCard'
+    if (id !== 1) {
+      dispatch(updateField({ field: 'cardDetails', value: {} }));
+    }
   };
 
   const subtotal = products.reduce((total, product) => {
     const numericPrice = parseFloat(product.price.replace(/[^0-9.-]+/g, ""));
     return total + numericPrice;
   }, 0);
-  
-  console.log("Subtotal:", `₿${subtotal.toLocaleString()}`);
+
+
+
+  const handlePlaceOrder = () => {
+    // dispatch(calculateTotal());
+    console.log('Order placed:', billState);
+  };
 
   return (
     <div className="flex flex-col max-w-[570px]">
@@ -75,9 +98,9 @@ function OrderSummary() {
         <OrderTotal subtotal={subtotal} shippingCharge={3000} />
         <div className="flex flex-col mt-5 w-full max-md:max-w-full">
           {paymentOptions.map((option, index) => (
-              <PaymentOption 
-              key={option.id} 
-              {...option} 
+            <PaymentOption
+              key={option.id}
+              {...option}
               isFirst={index === 0}
               selected={option.id === selectedPaymentId}
               onSelect={() => handlePaymentSelection(option.id)}
@@ -85,9 +108,10 @@ function OrderSummary() {
           ))}
         </div>
       </div>
-      <button 
+      <button
         className="gap-2.5 self-stretch px-6 py-5 mt-8 w-full text-base font-semibold leading-tight text-white bg-green-800 rounded-lg min-h-[56px] max-md:px-5 max-md:max-w-full"
         aria-label="Place Order"
+        onClick={handlePlaceOrder}
       >
         Place Order
       </button>
@@ -97,6 +121,6 @@ function OrderSummary() {
 
 export default OrderSummary;
 // 
-{/* <div class="flex flex-col mt-5 w-full font-medium leading-tight whitespace-nowrap max-md:max-w-full"><div class="flex flex-wrap gap-10 justify-between items-center w-full text-base max-md:max-w-full"><div class="self-stretch my-auto text-neutral-400">Subtotal</div><div class="self-stretch my-auto text-neutral-900">₿7,000.00</div></div><div class="mt-4 w-full border border-solid bg-neutral-400 border-neutral-400 min-h-[1px] max-md:max-w-full"></div><div class="flex flex-wrap gap-10 justify-between items-center mt-4 w-full max-md:max-w-full"><div class="self-stretch my-auto text-base text-neutral-400">Shipping</div><div class="self-stretch my-auto text-lg text-neutral-900">Free</div></div><div class="mt-4 w-full border border-solid bg-neutral-400 border-neutral-400 min-h-[1px] max-md:max-w-full"></div><div class="flex flex-wrap gap-10 justify-between items-center mt-4 w-full max-md:max-w-full"><div class="self-stretch my-auto text-base text-neutral-400">Total</div><div class="self-stretch my-auto text-xl text-neutral-900">₿48000.00</div></div></div> */}
+{/* <div class="flex flex-col mt-5 w-full font-medium leading-tight whitespace-nowrap max-md:max-w-full"><div class="flex flex-wrap gap-10 justify-between items-center w-full text-base max-md:max-w-full"><div class="self-stretch my-auto text-neutral-400">Subtotal</div><div class="self-stretch my-auto text-neutral-900">₿7,000.00</div></div><div class="mt-4 w-full border border-solid bg-neutral-400 border-neutral-400 min-h-[1px] max-md:max-w-full"></div><div class="flex flex-wrap gap-10 justify-between items-center mt-4 w-full max-md:max-w-full"><div class="self-stretch my-auto text-base text-neutral-400">Shipping</div><div class="self-stretch my-auto text-lg text-neutral-900">Free</div></div><div class="mt-4 w-full border border-solid bg-neutral-400 border-neutral-400 min-h-[1px] max-md:max-w-full"></div><div class="flex flex-wrap gap-10 justify-between items-center mt-4 w-full max-md:max-w-full"><div class="self-stretch my-auto text-base text-neutral-400">Total</div><div class="self-stretch my-auto text-xl text-neutral-900">₿48000.00</div></div></div> */ }
 
-{/* <div class="flex flex-col mt-5 w-full font-medium leading-tight whitespace-nowrap max-md:max-w-full"><div class="flex flex-wrap gap-10 justify-between items-center w-full text-base max-md:max-w-full"><div class="self-stretch my-auto text-neutral-400">Subtotal</div><div class="self-stretch my-auto text-neutral-900">₿7,000.00</div></div><div class="mt-4 w-full border border-solid bg-neutral-400 border-neutral-400 min-h-[1px] max-md:max-w-full"></div><div class="flex flex-wrap gap-10 justify-between items-center mt-4 w-full max-md:max-w-full"><div class="self-stretch my-auto text-base text-neutral-400">Shipping</div><div class="self-stretch my-auto text-lg text-neutral-900">Free</div></div><div class="mt-4 w-full border border-solid bg-neutral-400 border-neutral-400 min-h-[1px] max-md:max-w-full"></div><div class="flex flex-wrap gap-10 justify-between items-center mt-4 w-full max-md:max-w-full"><div class="self-stretch my-auto text-base text-neutral-400">Total</div><div class="self-stretch my-auto text-xl text-neutral-900">₿48000.00</div></div></div> */}
+{/* <div class="flex flex-col mt-5 w-full font-medium leading-tight whitespace-nowrap max-md:max-w-full"><div class="flex flex-wrap gap-10 justify-between items-center w-full text-base max-md:max-w-full"><div class="self-stretch my-auto text-neutral-400">Subtotal</div><div class="self-stretch my-auto text-neutral-900">₿7,000.00</div></div><div class="mt-4 w-full border border-solid bg-neutral-400 border-neutral-400 min-h-[1px] max-md:max-w-full"></div><div class="flex flex-wrap gap-10 justify-between items-center mt-4 w-full max-md:max-w-full"><div class="self-stretch my-auto text-base text-neutral-400">Shipping</div><div class="self-stretch my-auto text-lg text-neutral-900">Free</div></div><div class="mt-4 w-full border border-solid bg-neutral-400 border-neutral-400 min-h-[1px] max-md:max-w-full"></div><div class="flex flex-wrap gap-10 justify-between items-center mt-4 w-full max-md:max-w-full"><div class="self-stretch my-auto text-base text-neutral-400">Total</div><div class="self-stretch my-auto text-xl text-neutral-900">₿48000.00</div></div></div> */ }
