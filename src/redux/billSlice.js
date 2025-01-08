@@ -19,7 +19,7 @@ const initialState = {
   shipping: '',
   total: '',
   products: [], // Initializes test as an empty object to store key-value pairs
-  
+
 };
 
 const billSlice = createSlice({
@@ -70,14 +70,28 @@ const billSlice = createSlice({
     setProduct: (state, action) => {
       // Ensure that products are an array`
       state.products = action.payload || [];
-    }
-    
-    
+    },
+
+    setSubtotal: (state, action) => {
+      state.subtotal = action.payload;
+    },
+
+    setTotal: (state, action) => {
+      state.total = action.payload;
+    },
+    setShipping: (state, action) => {
+      state.shipping = action.payload;
+    },
+
+
+
+
+
   },
 });
 
-export const { 
-  setPaymentMethod, 
+export const {
+  setPaymentMethod,
   setCalculateTotal,
   setName,
   setCountry,
@@ -88,6 +102,9 @@ export const {
   setPhone,
   updateField,
   setProduct,
+  setTotal,
+  setShipping,
+  setSubtotal,
 } = billSlice.actions;
 
 export default billSlice.reducer;

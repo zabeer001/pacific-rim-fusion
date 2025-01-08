@@ -7,7 +7,7 @@ import OrderTotal from './OrderTotal';
 
 //redux
 import { useDispatch, useSelector } from 'react-redux';
-import { setPaymentMethod, setProduct } from './../../redux/billSlice';
+import { setPaymentMethod, setProduct, setTotal, setShipping, setSubtotal, } from './../../redux/billSlice';
 
 const products = [
   {
@@ -48,6 +48,9 @@ const paymentOptions = [
   }
 ];
 
+let shipping = 3000;
+
+
 function OrderSummary() {
 
   const dispatch = useDispatch();
@@ -58,6 +61,9 @@ function OrderSummary() {
   // Use the useEffect hook correctly inside the component
   useEffect(() => {
     // Auto-invoked function when the component mounts
+    dispatch(setProduct(products));
+  
+
     dispatch(setPaymentMethod(paymentOptions[2]));
    
   }, []); // Empty dependency array means it runs only once on mount
@@ -78,7 +84,12 @@ function OrderSummary() {
   }, 0);
 
   const handlePlaceOrder = () => {
-    dispatch(setProduct(products));
+
+    dispatch(setShipping(shipping));
+    dispatch(setSubtotal(subtotal));
+    dispatch(setTotal(subtotal+shipping));
+    
+  
     console.log('Order placed:', billState);
   };
 
