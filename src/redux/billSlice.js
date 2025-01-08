@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { CloudCog } from 'lucide-react';
 
 const initialState = {
   country: '',
@@ -17,7 +18,7 @@ const initialState = {
   subtotal: '',
   shipping: '',
   total: '',
-  test: {}, // Initializes test as an empty object to store key-value pairs
+  products: [], // Initializes test as an empty object to store key-value pairs
   
 };
 
@@ -66,17 +67,11 @@ const billSlice = createSlice({
     setPhone: (state, action) => {
       state.phone = action.payload.phone;
     },
-    setTest: (state, action) => {
-      const updates = action.payload; // Can be an object or an array of objects
-      if (Array.isArray(updates)) {
-        updates.forEach(({ key, value }) => {
-          state.test[key] = value;
-        });
-      } else {
-        const { key, value } = updates;
-        state.test[key] = value;
-      }
-    },
+    setProduct: (state, action) => {
+      // Ensure that products are an array`
+      state.products = action.payload || [];
+    }
+    
     
   },
 });
@@ -92,7 +87,7 @@ export const {
   setEmail,
   setPhone,
   updateField,
-  setTest,
+  setProduct,
 } = billSlice.actions;
 
 export default billSlice.reducer;

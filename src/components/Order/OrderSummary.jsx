@@ -1,19 +1,13 @@
 'use client'
 
-
-import { useState } from 'react';  // <-- Import useState
+import { useState, useEffect } from 'react';  // <-- Import useState and useEffect
 import ProductCard from './ProductCard';
 import PaymentOption from './PaymentOption';
 import OrderTotal from './OrderTotal';
 
 //redux
-import { useSelector, useDispatch } from 'react-redux';
-import { setPaymentMethod, setTest } from './../../redux/billSlice';
-
-
-
-
-
+import { useDispatch, useSelector } from 'react-redux';
+import { setPaymentMethod, setProduct } from './../../redux/billSlice';
 
 const products = [
   {
@@ -57,10 +51,16 @@ const paymentOptions = [
 function OrderSummary() {
 
   const dispatch = useDispatch();
-  const [selectedPaymentId, setSelectedPaymentId] = useState(1);
+  const [selectedPaymentId, setSelectedPaymentId] = useState(3);
 
   const billState = useSelector((state) => state);
 
+  // Use the useEffect hook correctly inside the component
+  useEffect(() => {
+    // Auto-invoked function when the component mounts
+    dispatch(setPaymentMethod(paymentOptions[2]));
+   
+  }, []); // Empty dependency array means it runs only once on mount
 
   const handlePaymentSelection = (id) => {
     setSelectedPaymentId(id);
@@ -68,14 +68,8 @@ function OrderSummary() {
     const selectedOption = paymentOptions.find(option => option.id === id);
     console.log(selectedOption);
 
-    //store in gobalState
+    //store in globalState
     dispatch(setPaymentMethod(selectedOption));
-    dispatch(setTest({ key: "favoriteColor", value: "blue" }));
-    dispatch(setTest({ key: "hobby", value: "coding" }));
-    dispatch(setTest({ key: "language", value: "JavaScript" }));
-    dispatch(setTest({ key: "age", value: 25 }));
-    dispatch(setTest({ key: "preferences", value: { theme: "dark", notifications: true } })); // Updates the value for the existing key
-
   };
 
   const subtotal = products.reduce((total, product) => {
@@ -83,10 +77,8 @@ function OrderSummary() {
     return total + numericPrice;
   }, 0);
 
-
-
   const handlePlaceOrder = () => {
-    // dispatch(calculateTotal());
+    dispatch(setProduct(products));
     console.log('Order placed:', billState);
   };
 
@@ -126,7 +118,3 @@ function OrderSummary() {
 }
 
 export default OrderSummary;
-// 
-{/* <div class="flex flex-col mt-5 w-full font-medium leading-tight whitespace-nowrap max-md:max-w-full"><div class="flex flex-wrap gap-10 justify-between items-center w-full text-base max-md:max-w-full"><div class="self-stretch my-auto text-neutral-400">Subtotal</div><div class="self-stretch my-auto text-neutral-900">₿7,000.00</div></div><div class="mt-4 w-full border border-solid bg-neutral-400 border-neutral-400 min-h-[1px] max-md:max-w-full"></div><div class="flex flex-wrap gap-10 justify-between items-center mt-4 w-full max-md:max-w-full"><div class="self-stretch my-auto text-base text-neutral-400">Shipping</div><div class="self-stretch my-auto text-lg text-neutral-900">Free</div></div><div class="mt-4 w-full border border-solid bg-neutral-400 border-neutral-400 min-h-[1px] max-md:max-w-full"></div><div class="flex flex-wrap gap-10 justify-between items-center mt-4 w-full max-md:max-w-full"><div class="self-stretch my-auto text-base text-neutral-400">Total</div><div class="self-stretch my-auto text-xl text-neutral-900">₿48000.00</div></div></div> */ }
-
-{/* <div class="flex flex-col mt-5 w-full font-medium leading-tight whitespace-nowrap max-md:max-w-full"><div class="flex flex-wrap gap-10 justify-between items-center w-full text-base max-md:max-w-full"><div class="self-stretch my-auto text-neutral-400">Subtotal</div><div class="self-stretch my-auto text-neutral-900">₿7,000.00</div></div><div class="mt-4 w-full border border-solid bg-neutral-400 border-neutral-400 min-h-[1px] max-md:max-w-full"></div><div class="flex flex-wrap gap-10 justify-between items-center mt-4 w-full max-md:max-w-full"><div class="self-stretch my-auto text-base text-neutral-400">Shipping</div><div class="self-stretch my-auto text-lg text-neutral-900">Free</div></div><div class="mt-4 w-full border border-solid bg-neutral-400 border-neutral-400 min-h-[1px] max-md:max-w-full"></div><div class="flex flex-wrap gap-10 justify-between items-center mt-4 w-full max-md:max-w-full"><div class="self-stretch my-auto text-base text-neutral-400">Total</div><div class="self-stretch my-auto text-xl text-neutral-900">₿48000.00</div></div></div> */ }
