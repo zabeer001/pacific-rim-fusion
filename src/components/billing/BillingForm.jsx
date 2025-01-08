@@ -77,8 +77,10 @@ export function BillingForm() {
             Save this information for faster check-out next time
           </label>
         </div>
-        <button type="submit">Submit</button>
       </form>
     </div>
   );
 }
+
+
+//<label for="phone" class="text-sm font-semibold">Phone Number</label>

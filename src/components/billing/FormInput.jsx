@@ -2,7 +2,10 @@
 export function FormInput({ id, label, type = "text", required, value, onValueChange }) {
   return (
     <div>
-      <label htmlFor={id} className="text-sm font-semibold">{label}{required && " *"}</label>
+     <label htmlFor={id} className="text-sm font-semibold text-black">
+        {label}
+        {required && <span className="text-red-500"> *</span>} {/* Red * for required */}
+      </label>
       <input
         id={id}
         name={id} // Add the name attribute here
@@ -16,3 +19,6 @@ export function FormInput({ id, label, type = "text", required, value, onValueCh
     </div>
   );
 }
+
+
+{/* <button type="submit">Submit</button> */}
